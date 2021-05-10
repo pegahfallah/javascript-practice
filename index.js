@@ -414,23 +414,21 @@ function unboundedKnapsack(W, val, wt, n) {
   return dp[W];
 }
 
-
-function coin(coins, money, index, memo){
-  let key = money + "-" + index
-  if(memo.contains(key)){
-    return memo.get(key)
+function coin(coins, money, index, memo) {
+  let key = money + "-" + index;
+  if (memo.contains(key)) {
+    return memo.get(key);
   }
-  let amount = 0
-  let ways = 0
-  if(money === 0) return 1
-  if(index >= coins.length) return 0
+  let amount = 0;
+  let ways = 0;
+  if (money === 0) return 1;
+  if (index >= coins.length) return 0;
 
-
-  while(amount <= money){
-    let remaining = money - amount
-    ways += coins(coins, remaining, index+1)
-    amount += coins[index]
+  while (amount <= money) {
+    let remaining = money - amount;
+    ways += coins(coins, remaining, index + 1);
+    amount += coins[index];
   }
 
-  return coins
+  return coins;
 }
