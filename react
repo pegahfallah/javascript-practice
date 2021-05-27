@@ -1,0 +1,52 @@
+class ClassComponent extends React.Component {
+  render() {
+    const { name } = this.props;
+    return <h1>Hello, { name }</h1>;
+ }
+}
+
+class components you pass in this
+
+ constructor(props) {
+   super(props);
+   this.state = {
+     count: 0
+   };
+ }
+
+ to handle state 
+ The constructor for a React component is called before it is mounted. When implementing the constructor for a React.Component subclass, 
+ you should call super(props) before any other statement. 
+ Otherwise, this.props will be undefined in the constructor, which can lead to bugs.
+
+
+
+form default is to refresh age so e.preventdefault()
+
+
+fetch returns a getter
+
+you can use .then or just await 
+
+
+  <form className="form" onSubmit={searchMovies}>
+            <label className="label" htmlFor="query">Movie Name</label>
+            <input className="input" type="text" name="query"
+                placeholder="i.e. Jurassic Park"
+                value={query} onChange={(e) => setQuery(e.target.value)}
+                />
+            <button className="button" type="submit">Search</button>
+        </form>
+
+
+        <img className="card--image" //syntax for sub className=""
+
+
+        maps need a key 
+         {movies.filter(movie => movie.poster_path).map(movie => ( //only the ones with a poster path
+                    <div className="card" key={movie.id}>
+                        <img className="card--image"
+                            src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`}
+                            alt={movie.title + ' poster'}
+                            />
+

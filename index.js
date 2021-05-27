@@ -432,3 +432,177 @@ function coin(coins, money, index, memo) {
 
   return coins;
 }
+
+/***
+ * REGEX
+ *
+
+let regex = /testing/;
+let test = regex.test("hi testing");
+
+//matching multiple words
+let regexOr = /dog|cat|bird/;
+//ignore case i 
+let case = /freecodecamp/i
+
+.match() extracts the letters first one 
+if you have the g flag it matches all repeats 
+
+wildcards
+. is anything 
+
+/b[aiu]g/
+matches bad big and bug
+
+^ negate
+
++ 1 or more times 
+
+* 0 or more 
+
+match patterns only at the beginning of a string ^
+
+$ matches the end 
+
+
+\w matches and letter number or _ 
+g matches any occurance
+
+
+match all non letter or number
+/\W/g
+ /W
+
+ numbers is \d
+
+
+greedy match longest possible part of the string that matches 
+lazy smallest part that matches  ?
+
+
+
+USERNAME VALIDATOR: 
+- let userCheck = /^[A-Za-z]{2,}\d* / Change this line
+
+{2,} --> previous thing can match and after is max matches at least 2 letters 
+
+//match all NON whitespace  \S
+match all whitespace \s
+
+{} quantified specifier 
+
+all or none ?
+
+Lookaheads 
+let quRegex= /q(?=u)/; POSITIVE check for q and is theres a u then return q
+let qRegex = /q(?!u)/; NEGATIVE check for q and look ahead if theres a u DONT return
+
+passwords with 5 char> and 2 consecutive numberss
+let pwRegex = /(?=\w{5})(?=\D*\d{2})/; // Change this line
+
+
+group things you are looking for 
+()
+capture group 
+let repeatRegex = /(\w+)\s\1/;
+any letters then a space and then repeat same letters 
+
+
+replace text
+"Code Camp".replace(/(\w+)\s(\w+)/, '$2 $1');
+
+// Returns "Camp Code"
+
+remove white space at beginning and end
+^\s+|\s+$g 
+hello.replace(regex, '')
+**/
+
+//find a person by an ID --> convert a dictionary where id = key value is the person
+let result;
+
+const people = {};
+result = people.reduce((acc, person) => {
+  return { ...acc, [person.id]: person };
+}, {});
+
+//max value with reduce function
+
+result = people.reduce((acc, person) => {
+  if (acc === null || person.age > acc) {
+    return person.age;
+  }
+  return acc; //current max value
+}, null);
+
+//  implement a map with reduce
+
+result = people.reduce((acc, person) => {
+  return [...acc, person.name];
+}, []);
+
+//write a reduce that finds a person by their name and
+
+result = people.reduce((acc, person) => {
+  if (acc !== null) {
+    return acc;
+  } //we found the person dont need to iterate
+  //still it loops through the rest
+  if (person.name === "Joe") return person;
+  return null;
+}, null);
+
+// check if all people are over 18
+
+result = people.reduce((acc, person) => {
+  return acc && person.age > 18;
+}, false);
+
+// any over 18
+// some function
+result = people.reduce((acc, person) => {
+  if (acc) return true;
+  return person.age > 18;
+}, false);
+
+/// count how many times a status shows update
+let orders = [];
+result = orders.reduce((acc, order) => {
+  return { ...acc, [order.status]: (acc[order.status] || 0) + 1 };
+});
+
+function getShortMessages(messages) {
+  // SOLUTION GOES HERE
+  return messages.filter((f) => f.message.length < 50).map((m) => m.message);
+}
+
+function countWords(arr) {
+  return arr.reduce(function (countMap, word) {
+    countMap[word] = ++countMap[word] || 1; // increment or initialize to 1
+    return countMap;
+  }, {}); // second argument to reduce initialises countMap to {}
+}
+
+//flatten
+let folders = ["", []];
+
+function flatten(acc, item) {
+  if (Array.isArray(item)) {
+    //if its an array
+    return [...acc, ...item.reduce(flatten, acc)]; //use flatten function again with whatever were currently at
+  } //recursively call itself to flatten children
+  return [...acc, item]; //like mapping
+}
+
+result = folders.reduce(flatten, []);
+
+// create a reduce function
+
+function reduce(arr, callback, initial) {
+  let acc = initial;
+  //iterate over items in the array
+  for (let i = 0; i < arr.length; i++) {
+    acc = callback(acc, arr[i], i, arr); //its result will replace acc
+  }
+  return acc;
+}
