@@ -522,9 +522,18 @@ hello.replace(regex, '')
 let result;
 
 const people = {};
+
 result = people.reduce((acc, person) => {
   return { ...acc, [person.id]: person };
 }, {});
+
+result = people.reduce((acc, person) => {
+  return { ...acc, [person.id]: person };
+}, {});
+
+result = people.reduce((acc, person) => {
+  return person.age > acc ? person.age : acc;
+}, null);
 
 //max value with reduce function
 
@@ -537,11 +546,25 @@ result = people.reduce((acc, person) => {
 
 //  implement a map with reduce
 
+let items = [];
+let id, input;
+items.reduce((accum, o, i) => {
+  return [...accum, o.id === id ? { ...o, name: input } : o];
+}, []);
+
+result = people.reduce((acc, person) => {
+  return [...acc, person.name];
+}, []);
+
 result = people.reduce((acc, person) => {
   return [...acc, person.name];
 }, []);
 
 //write a reduce that finds a person by their name and
+result = people.reduce((acc, person) => {
+  if (acc !== null) return acc;
+  if ("joe" === person.name) return person;
+}, null);
 
 result = people.reduce((acc, person) => {
   if (acc !== null) {
@@ -555,8 +578,9 @@ result = people.reduce((acc, person) => {
 // check if all people are over 18
 
 result = people.reduce((acc, person) => {
-  return acc && person.age > 18;
-}, false);
+  if (!acc) return false; //found someone
+  return person.age > 18;
+}, true);
 
 // any over 18
 // some function
@@ -576,6 +600,12 @@ function getShortMessages(messages) {
   return messages.filter((f) => f.message.length < 50).map((m) => m.message);
 }
 
+function countSomething(arr) {
+  return arr.reduce((acc, i) => {
+    acc[i] = ++acc[i] || 1;
+    return acc;
+  }, {});
+}
 function countWords(arr) {
   return arr.reduce(function (countMap, word) {
     countMap[word] = ++countMap[word] || 1; // increment or initialize to 1
@@ -599,6 +629,23 @@ result = folders.reduce(flatten, []);
 // create a reduce function
 
 function reduce(arr, callback, initial) {
+  let accumulator = initial;
+
+  for (let i = 0; i < arr.length; i++) {
+    accumulator = callback(accumulator, arr[i], i, arr);
+  }
+
+  return accumulator;
+}
+
+function flattener(acc, item) {
+  if (Array.isArray(item)) {
+    return [...acc, ...item.reduce(flatten, acc)];
+  }
+  return [...acc, item];
+}
+
+function reduce(arr, callback, initial) {
   let acc = initial;
   //iterate over items in the array
   for (let i = 0; i < arr.length; i++) {
@@ -606,3 +653,111 @@ function reduce(arr, callback, initial) {
   }
   return acc;
 }
+
+// Explained:
+// The value of `this` in Function.call is the function
+// that will be executed.
+//
+// Bind returns a new function with the value of `this` fixed
+// to whatever was passed as its first argument.
+//
+// Every function 'inherits' from Function.prototype,
+// thus every function, including call, apply and bind
+// have the methods call apply and bind.
+//
+// Function.prototype.call === Function.call
+// module.exports = Function.call.bind(Array.prototype.slice);
+
+function duckCount() {
+  return Array.prototype.slice.call(arguments).filter(function (obj) {
+    return Object.prototype.hasOwnProperty.call(obj, "quack");
+  }).length;
+}
+
+// module.exports = duckCount;
+
+// call method
+
+function printname(firstname, lastname) {
+  console.log(`${firstname} ${lastname}`);
+  console.log(this); //call tlets you change this keyword
+}
+
+printname.call(
+  {
+    //phone will be the new THIS
+    model: "samsung",
+    colour: "black",
+  },
+  "Pegah",
+  "Fallah"
+);
+
+//calling the function and able to specify the object which will be retrieved by the THIS keyword
+//similar to the bind keyword and using it later on
+
+// we can do this with binf
+//bind tajes this
+//call method is going to do these 2 things in one go
+
+const printnamev2 = printname.bind(
+  {
+    //phone will be the new THIS
+    model: "samsung",
+    colour: "black",
+  },
+  "Pegah",
+  "Fallah"
+);
+//call method is going to do these 2 things in one go
+
+printnamev2();
+
+//call method is going to do these 2 things in one go
+
+//transaction code
+// hasOwnProperty does not check the prototypal inheretance
+// in checks the chain
+// !! coerces a value real object sitting
+// If you’d like to access the direct arguments of the arrow function, then you can use the rest parameters feature:
+
+function doSomething(z) {
+  const arrow = (...args) => {
+    console.log(args); //print a b not hi
+  };
+  arrow("a", "b");
+}
+
+doSomething("hi");
+
+//implicit return
+const increment = (num) => num + 1;
+
+//value of this lexical always gets outer functions this
+const myObject = {
+  myMethod(items) {
+    console.log(this); // logs myObject
+    const callback = () => {
+      console.log(this); // logs myObject
+    };
+    items.forEach(callback);
+  },
+};
+
+myObject.myMethod([1, 2, 3]);
+
+//Now, in contrast with regular functions, the method defined using an arrow binds this lexically to the class instance.
+class Hero {
+  constructor(heroName) {
+    this.heroName = heroName;
+  }
+
+  logName = () => {
+    console.log(this.heroName);
+  };
+}
+
+const batman = new Hero("Batman");
+/**
+ * you can define methods using the arrow function syntax inside classes. Fat arrow methods bind this value to the class instance.
+ */
